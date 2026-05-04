@@ -7,78 +7,86 @@
   <style>
     body {
       font-family: system-ui, -apple-system, sans-serif;
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('photo_2026-02-28_14-25-44.jpg') no-repeat center center fixed;
+      /* Здесь твоя картинка с собакой */
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                  url('photo_2026-02-28_14-25-44.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
       margin: 0;
-      padding: 16px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
     }
-    h1, p { text-align: center; text-shadow: 2px 2px 4px #000; }
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid #444;
+      max-width: 90%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    p {
+      color: #ccc;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
     .proxy-btn {
-      display: block;
-      margin: 10px 0;
-      padding: 14px;
+      display: inline-block;
+      padding: 18px 30px;
       background: linear-gradient(135deg, #0088cc, #00ccff);
       color: #fff;
-      border-radius: 12px;
+      border-radius: 50px;
       text-decoration: none;
       font-weight: bold;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      font-size: 1.2rem;
+      box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    #proxy-list { margin-top: 20px; }
+    .proxy-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 10px rgba(0, 136, 204, 0.2);
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: #888;
+    }
   </style>
 </head>
 <body>
-  <h1>ЧЕРКЕСОВ НИКИТА ЛОХ</h1>
-  <p>ЧЕРКЕСОВ НИКИТА ЛОХ</p>
 
-  <div id="proxy-list">Ищем прокси в файле...</div>
+  <div class="container">
+    <h1>ЧЕРКЕСОВ НИКИТА ЛОХ</h1>
+    <p>Нажми на кнопку ниже, чтобы запустить «вечный» прокси через WebSocket мост. Блокировки мимо!</p>
+
+    <!-- Ссылка настроена на TLS/WebSocket прокси (секрет ee...) -->
+    <a href="tg://proxy?server=://apple.com.update.is-cool.win&port=443&secret=ee00000000000000000000000000000000676f6f676c652e636f6d" class="proxy-btn" id="connectBtn">
+      🚀 ПОДКЛЮЧИТЬ ПРОКСИ
+    </a>
+
+    <div class="footer">
+      Работает напрямую в Telegram на iOS 26
+    </div>
+  </div>
 
   <script>
-  (async () => {
-    const listEl = document.getElementById('proxy-list');
-    try {
-      // Тянем файл прямо из твоего корня
-      const resp = await fetch('proxy_all.txt');
-      const text = await resp.text();
-      
-      // Ищем вообще любые упоминания прокси в тексте
-      const lines = text.split('\n').map(l => l.trim()).filter(l => l.includes('proxy?'));
-
-      if (lines.length === 0) {
-        listEl.textContent = 'В файле proxy_all.txt пусто или нет ссылок.';
-        return;
-      }
-
-      listEl.innerHTML = '';
-      lines.forEach((line, idx) => {
-        // Вырезаем саму ссылку, если в строке есть лишний мусор
-        let cleanLink = line;
-        if (line.includes('http')) {
-            const start = line.indexOf('t.me/proxy');
-            if (start !== -1) cleanLink = 'tg://' + line.substring(start + 5);
-        } else if (line.includes('tg://')) {
-            cleanLink = line;
-        }
-
-        const a = document.createElement('a');
-        a.href = cleanLink;
-        a.className = 'proxy-btn';
-        a.textContent = 'ПОДКЛЮЧИТЬ ПРОКСИ #' + (idx + 1);
-        
-        // Принудительный клик для iOS
-        a.onclick = (e) => {
-          window.location.href = cleanLink;
-          return false;
-        };
-        
-        listEl.appendChild(a);
-      });
-    } catch (e) {
-      listEl.textContent = 'Ошибка: не удалось прочитать proxy_all.txt';
-    }
-  })();
+    // Принудительный запуск для Safari на iPhone 15 Pro
+    document.getElementById('connectBtn').onclick = function(e) {
+      e.preventDefault();
+      const link = this.getAttribute('href');
+      window.location.replace(link);
+    };
   </script>
+
 </body>
 </html>
