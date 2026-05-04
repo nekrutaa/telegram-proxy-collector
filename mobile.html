@@ -55,7 +55,7 @@
 
         try {
       // Используем основной файл со всеми прокси
-      const url = 'https://githubusercontent.com';
+      const url = 'https://allorigins.win' + encodeURIComponent('https://githubusercontent.com');
       const resp = await fetch(url);
       const text = await resp.text();
       
