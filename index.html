@@ -1,44 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MTProto прокси для Telegram</title>
-    <style>
-        body { font-family: sans-serif; background: #000; color: #fff; padding: 10px; margin: 0; }
-        h3 { font-size: 18px; margin-left: 5px; }
-        p { font-size: 12px; color: #aaa; margin-left: 5px; margin-bottom: 20px; }
-        .btn { 
-            display: block; width: 100%; padding: 12px 0; margin-bottom: 8px;
-            background: #00b0f0; color: white; text-decoration: none;
-            text-align: center; border-radius: 8px; font-size: 14px;
-            border: 1px solid #0088cc; box-sizing: border-box;
-        }
-    </style>
+    <!-- Эта строка мгновенно перенаправит на мобильную версию -->
+    <meta http-equiv="refresh" content="0; url=mobile.html">
 </head>
 <body>
-    <h3>MTProto прокси для Telegram</h3>
-    <p>Нажмите на кнопку ниже, затем подтвердите подключение в Telegram. Если ничего не происходит, попробуйте сменить браузер.</p>
-    
-    <div id="proxy-container"></div>
-
-    <script>
-        // Подтягиваем прокси из твоего же файла proxy_all.txt
-        fetch('https://githubusercontent.com')
-            .then(res => res.text())
-            .then(text => {
-                const container = document.getElementById('proxy-container');
-                const links = text.split('\n').filter(l => l.includes('t.me/proxy'));
-                
-                links.forEach((link, i) => {
-                    const a = document.createElement('a');
-                    // МЕНЯЕМ https на tg, чтобы iPhone сразу открывал приложение
-                    a.href = link.trim().replace('https://t.me', 'tg://');
-                    a.className = 'btn';
-                    a.innerText = `Подключить прокси #${i + 1}`;
-                    container.appendChild(a);
-                });
-            });
-    </script>
+    <p>Загрузка интерфейса... <a href="mobile.html">нажмите сюда</a>, если не перенаправило.</p>
 </body>
 </html>
