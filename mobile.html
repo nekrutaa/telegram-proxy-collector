@@ -69,14 +69,18 @@
       }
 
       listEl.innerHTML = '';
-      lines.forEach((link, idx) => {
+            lines.forEach((link, idx) => {
         const a = document.createElement('a');
-        a.href = link.replace('https://t.me', 'tg://');
+        
+        // Убираем лишние пробелы и принудительно меняем протокол
+        const cleanLink = link.trim().replace('https://t.me', 'tg://');
+        a.href = cleanLink;
+        
         a.textContent = 'Подключить прокси #' + (idx + 1);
         a.className = 'proxy-btn';
-        a.rel = 'noopener noreferrer';
         listEl.appendChild(a);
       });
+
     } catch (e) {
       console.error(e);
       listEl.innerHTML = '<div class="error">Ошибка загрузки списка прокси.</div>';
