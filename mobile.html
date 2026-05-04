@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <title>ЧЕРКЕСОВ НИКИТА ЛОХ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       font-family: system-ui, -apple-system, sans-serif;
-      /* ТВОЯ СОБАКА ТУТ */
-      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
                   url('photo_2026-02-28_14-25-44.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
@@ -21,19 +21,21 @@
       min-height: 100vh;
       text-align: center;
     }
+
     h1 {
       font-size: 2.2rem;
       margin-bottom: 10px;
-      text-shadow: 2px 2px 8px #000, 0 0 20px rgba(0,0,0,0.5);
+      text-shadow: 2px 2px 8px #000;
     }
+
     p {
-      color: #fff;
       margin-bottom: 30px;
       font-size: 1.2rem;
       font-weight: 500;
       text-shadow: 2px 2px 6px #000;
       max-width: 300px;
     }
+
     .proxy-btn {
       display: block;
       width: 280px;
@@ -47,26 +49,62 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
       border: 1px solid rgba(255,255,255,0.2);
     }
+
     .proxy-btn:active {
       transform: scale(0.96);
     }
+
+    .status {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
   </style>
 </head>
+
 <body>
 
   <h1>ЧЕРКЕСОВ НИКИТА ЛОХ</h1>
   <p>Никита, жми кнопку и прокси твой!</p>
 
-  <!-- Ссылка WebSocket / TLS -->
-  <a href="tg://proxy?server=://apple.com.update.is-cool.win&port=443&secret=ee00000000000000000000000000000000676f6f676c652e636f6d" class="proxy-btn" id="connectBtn">
+  <a href="#" class="proxy-btn" id="connectBtn">
     🚀 ПОДКЛЮЧИТЬ
   </a>
 
+  <div class="status" id="status">Подбираем лучший прокси...</div>
+
   <script>
-    // Принудительный вызов для iPhone
+    const proxies = [
+      "tg://proxy?server=172.65.117.172&port=22&secret=dd79e344818749bd7ac519130220c25d09",
+      "tg://proxy?server=195.254.165.247&port=25565&secret=dd79e344818749bd7ac519130220c25d09",
+      "tg://proxy?server=185.117.0.248&port=443&secret=eed451f808fd60ed2c45f11d38fdbc87c57961686f6f2e636f6d",
+      "tg://proxy?server=91.107.166.142&port=8888&secret=ddb10c15b9f659ae2b9f1e646c9c7c1f40"
+    ];
+
+    let currentIndex = 0;
+
+    function connectNextProxy() {
+      if (currentIndex >= proxies.length) {
+        document.getElementById("status").innerText = "❌ Все прокси не ответили";
+        return;
+      }
+
+      const proxy = proxies[currentIndex];
+      document.getElementById("status").innerText =
+        "Пробуем прокси " + (currentIndex + 1);
+
+      currentIndex++;
+
+      window.location.href = proxy;
+
+      // fallback через 2 секунды
+      setTimeout(connectNextProxy, 2000);
+    }
+
     document.getElementById('connectBtn').onclick = function(e) {
       e.preventDefault();
-      window.location.replace(this.getAttribute('href'));
+      currentIndex = Math.floor(Math.random() * proxies.length); // случайный старт
+      connectNextProxy();
     };
   </script>
 
