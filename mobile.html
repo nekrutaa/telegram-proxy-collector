@@ -5,34 +5,31 @@
   <title>ЧЕРКЕСОВ НИКИТА ЛОХ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-        body {
+    body {
       font-family: system-ui, -apple-system, sans-serif;
-      /* Вместо mem.jpg напиши название своего файла */
-      background: url('photo_2026-02-28_14-25-44.jpg') no-repeat center center fixed; 
+      /* Твоя картинка на фоне */
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('photo_2026-02-28_14-25-44.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
       margin: 0;
       padding: 16px;
     }
-
-    h1 { font-size: 1.6rem; margin-bottom: 10px; text-align: center; }
-    p { color: #aaa; margin-bottom: 20px; line-height: 1.4; text-align: center; }
+    h1 { font-size: 1.6rem; margin-bottom: 10px; text-shadow: 2px 2px 4px #000; }
+    p { color: #eee; margin-bottom: 10px; line-height: 1.4; text-shadow: 2px 2px 4px #000; }
     .proxy-btn {
       display: block;
-      margin: 10px 0;
-      padding: 12px;
+      margin: 8px 0;
+      padding: 12px 14px;
       background: linear-gradient(135deg, #0088cc, #00ccff);
       color: #fff;
       border-radius: 10px;
       text-decoration: none;
-      font-weight: bold;
+      font-weight: 500;
       text-align: center;
-      border: none;
-      cursor: pointer;
     }
-    .proxy-btn:active { opacity: 0.7; transform: scale(0.98); }
+    .proxy-btn:active { opacity: 0.8; }
     #proxy-list { margin-top: 12px; }
-    .error { color: #ff8080; text-align: center; }
+    .error { background: rgba(255,0,0,0.2); padding: 10px; border-radius: 10px; }
   </style>
 </head>
 <body>
@@ -42,52 +39,47 @@
   <div id="proxy-list">Загружаем список прокси…</div>
 
   <script>
-      (async () => {
+  (async () => {
     const listEl = document.getElementById('proxy-list');
-    
     try {
-      // БЕРЕМ ИЗ ТВОЕГО ЖЕ РЕПОЗИТОРИЯ
-      const resp = await fetch('proxy_all.txt'); 
-      if (!resp.ok) throw new Error('Файл не найден');
-      
+      // Берем файл прямо из твоего репозитория
+      const resp = await fetch('proxy_all.txt');
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+
       const text = await resp.text();
-      
-      // Очищаем строки и ищем ссылки
-      const lines = text.split('\n')
-                        .map(l => l.trim())
-                        .filter(l => l.includes('t.me/proxy'));
+      // Фильтруем только строки с прокси
+      const lines = text.split('\n').map(l => l.trim()).filter(l => l.includes('t.me/proxy'));
 
-      if (lines.length > 0) {
-        listEl.innerHTML = ''; // Убираем надпись "Загрузка"
-
-        lines.forEach((link, idx) => {
-          // Находим начало ссылки и меняем на tg://
-          const startIdx = link.indexOf('t.me/proxy');
-          const tgLink = 'tg://' + link.substring(startIdx + 5);
-          
-          const a = document.createElement('a');
-          a.href = tgLink;
-          a.className = 'proxy-btn';
-          a.textContent = 'Подключить прокси #' + (idx + 1);
-          
-          // Для гарантии на iOS добавляем принудительный переход
-          a.onclick = (e) => {
-            window.location.href = tgLink;
-            return false;
-          };
-          
-          listEl.appendChild(a);
-        });
-      } else {
-        listEl.textContent = 'В файле пока нет живых ссылок.';
+      if (!lines.length) {
+        listEl.textContent = 'Пока нет доступных прокси.';
+        return;
       }
+
+      listEl.innerHTML = '';
+      lines.forEach((link, idx) => {
+        const a = document.createElement('a');
+        
+        // МАГИЯ ОТКРЫТИЯ: превращаем в tg://
+        const startIdx = link.indexOf('t.me/proxy');
+        const cleanLink = 'tg://' + link.substring(startIdx + 5);
+        
+        a.href = cleanLink;
+        a.textContent = 'Подключить прокси #' + (idx + 1);
+        a.className = 'proxy-btn';
+        
+        // Принудительный пинок для Safari
+        a.onclick = (e) => {
+          window.location.href = cleanLink;
+          return false;
+        };
+        
+        listEl.appendChild(a);
+      });
     } catch (e) {
       console.error(e);
-      listEl.innerHTML = '<div class="error">Ошибка: не удалось прочитать proxy_all.txt</div>';
+      listEl.innerHTML = '<div class="error">Ошибка: не найден файл proxy_all.txt</div>';
     }
   })();
-
-
   </script>
 </body>
 </html>
