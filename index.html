@@ -3,45 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Proxy</title>
+    <title>MTProto прокси для Telegram</title>
     <style>
-        body { font-family: -apple-system, sans-serif; background: #1c1c1c; color: white; text-align: center; padding: 20px; }
-        .proxy-card { 
-            background: #2b2b2b; border-radius: 15px; padding: 20px; margin-bottom: 15px;
-            display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid #3d3d3d;
-        }
+        body { font-family: sans-serif; background: #000; color: #fff; padding: 10px; margin: 0; }
+        h3 { font-size: 18px; margin-left: 5px; }
+        p { font-size: 12px; color: #aaa; margin-left: 5px; margin-bottom: 20px; }
         .btn { 
-            background: #0088cc; color: white; text-decoration: none; 
-            padding: 10px 20px; border-radius: 10px; font-weight: bold;
+            display: block; width: 100%; padding: 12px 0; margin-bottom: 8px;
+            background: #00b0f0; color: white; text-decoration: none;
+            text-align: center; border-radius: 8px; font-size: 14px;
+            border: 1px solid #0088cc; box-sizing: border-box;
         }
-        h2 { color: #0088cc; }
     </style>
 </head>
 <body>
-    <h2>🚀 Быстрые Прокси для РФ</h2>
-    <div id="proxy-list">Загрузка свежих прокси...</div>
+    <h3>MTProto прокси для Telegram</h3>
+    <p>Нажмите на кнопку ниже, затем подтвердите подключение в Telegram. Если ничего не происходит, попробуйте сменить браузер.</p>
+    
+    <div id="proxy-container"></div>
 
     <script>
-        // Берем файл, который обновляет твой скрипт
-        fetch('proxy_ru.txt')
-            .then(response => response.text())
-            .then(data => {
-                const list = document.getElementById('proxy-list');
-                list.innerHTML = '';
-                const lines = data.split('\n').filter(line => line.includes('t.me/proxy'));
+        // Подтягиваем прокси из твоего же файла proxy_all.txt
+        fetch('proxy_all.txt')
+            .then(res => res.text())
+            .then(text => {
+                const container = document.getElementById('proxy-container');
+                const links = text.split('\n').filter(l => l.includes('t.me/proxy'));
                 
-                lines.forEach((line, index) => {
-                    // ГЛАВНАЯ МАГИЯ: меняем https://t.me на tg://
-                    const tgLink = line.trim().replace('https://t.me', 'tg://');
-                    
-                    const card = document.createElement('div');
-                    card.className = 'proxy-card';
-                    card.innerHTML = `
-                        <span>Прокси #${index + 1} (RU)</span>
-                        <a href="${tgLink}" class="btn">ПОДКЛЮЧИТЬ</a>
-                    `;
-                    list.appendChild(card);
+                links.forEach((link, i) => {
+                    const a = document.createElement('a');
+                    // МЕНЯЕМ https на tg, чтобы iPhone сразу открывал приложение
+                    a.href = link.trim().replace('https://t.me', 'tg://');
+                    a.className = 'btn';
+                    a.innerText = `Подключить прокси #${i + 1}`;
+                    container.appendChild(a);
                 });
             });
     </script>
