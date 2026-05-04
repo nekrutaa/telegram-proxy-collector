@@ -7,67 +7,67 @@
   <style>
     body {
       font-family: system-ui, -apple-system, sans-serif;
-      /* Твоя картинка на фоне */
       background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('photo_2026-02-28_14-25-44.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
       margin: 0;
       padding: 16px;
     }
-    h1 { font-size: 1.6rem; margin-bottom: 10px; text-shadow: 2px 2px 4px #000; }
-    p { color: #eee; margin-bottom: 10px; line-height: 1.4; text-shadow: 2px 2px 4px #000; }
+    h1, p { text-align: center; text-shadow: 2px 2px 4px #000; }
     .proxy-btn {
       display: block;
-      margin: 8px 0;
-      padding: 12px 14px;
+      margin: 10px 0;
+      padding: 14px;
       background: linear-gradient(135deg, #0088cc, #00ccff);
       color: #fff;
-      border-radius: 10px;
+      border-radius: 12px;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: bold;
       text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
-    .proxy-btn:active { opacity: 0.8; }
-    #proxy-list { margin-top: 12px; }
-    .error { background: rgba(255,0,0,0.2); padding: 10px; border-radius: 10px; }
+    #proxy-list { margin-top: 20px; }
   </style>
 </head>
 <body>
   <h1>ЧЕРКЕСОВ НИКИТА ЛОХ</h1>
   <p>ЧЕРКЕСОВ НИКИТА ЛОХ</p>
 
-  <div id="proxy-list">Загружаем список прокси…</div>
+  <div id="proxy-list">Ищем прокси в файле...</div>
 
   <script>
   (async () => {
     const listEl = document.getElementById('proxy-list');
     try {
-      // Берем файл прямо из твоего репозитория
+      // Тянем файл прямо из твоего корня
       const resp = await fetch('proxy_all.txt');
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
-
       const text = await resp.text();
-      // Фильтруем только строки с прокси
-      const lines = text.split('\n').map(l => l.trim()).filter(l => l.includes('t.me/proxy'));
+      
+      // Ищем вообще любые упоминания прокси в тексте
+      const lines = text.split('\n').map(l => l.trim()).filter(l => l.includes('proxy?'));
 
-      if (!lines.length) {
-        listEl.textContent = 'Пока нет доступных прокси.';
+      if (lines.length === 0) {
+        listEl.textContent = 'В файле proxy_all.txt пусто или нет ссылок.';
         return;
       }
 
       listEl.innerHTML = '';
-      lines.forEach((link, idx) => {
+      lines.forEach((line, idx) => {
+        // Вырезаем саму ссылку, если в строке есть лишний мусор
+        let cleanLink = line;
+        if (line.includes('http')) {
+            const start = line.indexOf('t.me/proxy');
+            if (start !== -1) cleanLink = 'tg://' + line.substring(start + 5);
+        } else if (line.includes('tg://')) {
+            cleanLink = line;
+        }
+
         const a = document.createElement('a');
-        
-        // МАГИЯ ОТКРЫТИЯ: превращаем в tg://
-        const startIdx = link.indexOf('t.me/proxy');
-        const cleanLink = 'tg://' + link.substring(startIdx + 5);
-        
         a.href = cleanLink;
-        a.textContent = 'Подключить прокси #' + (idx + 1);
         a.className = 'proxy-btn';
+        a.textContent = 'ПОДКЛЮЧИТЬ ПРОКСИ #' + (idx + 1);
         
-        // Принудительный пинок для Safari
+        // Принудительный клик для iOS
         a.onclick = (e) => {
           window.location.href = cleanLink;
           return false;
@@ -76,8 +76,7 @@
         listEl.appendChild(a);
       });
     } catch (e) {
-      console.error(e);
-      listEl.innerHTML = '<div class="error">Ошибка: не найден файл proxy_all.txt</div>';
+      listEl.textContent = 'Ошибка: не удалось прочитать proxy_all.txt';
     }
   })();
   </script>
