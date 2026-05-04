@@ -7,13 +7,13 @@
   <style>
     body {
       font-family: system-ui, -apple-system, sans-serif;
-      /* Здесь твоя картинка с собакой */
-      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+      /* ТВОЯ СОБАКА ТУТ */
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
                   url('photo_2026-02-28_14-25-44.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
       margin: 0;
-      padding: 0;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -21,70 +21,52 @@
       min-height: 100vh;
       text-align: center;
     }
-    .container {
-      background: rgba(0, 0, 0, 0.7);
-      padding: 30px;
-      border-radius: 20px;
-      border: 1px solid #444;
-      max-width: 90%;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
     h1 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+      text-shadow: 2px 2px 8px #000, 0 0 20px rgba(0,0,0,0.5);
     }
     p {
-      color: #ccc;
+      color: #fff;
       margin-bottom: 30px;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      font-weight: 500;
+      text-shadow: 2px 2px 6px #000;
+      max-width: 300px;
     }
     .proxy-btn {
-      display: inline-block;
-      padding: 18px 30px;
+      display: block;
+      width: 280px;
+      padding: 18px 0;
       background: linear-gradient(135deg, #0088cc, #00ccff);
       color: #fff;
-      border-radius: 50px;
+      border-radius: 15px;
       text-decoration: none;
       font-weight: bold;
-      font-size: 1.2rem;
-      box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
-      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 1.3rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255,255,255,0.2);
     }
     .proxy-btn:active {
-      transform: scale(0.95);
-      box-shadow: 0 2px 10px rgba(0, 136, 204, 0.2);
-    }
-    .footer {
-      margin-top: 20px;
-      font-size: 0.8rem;
-      color: #888;
+      transform: scale(0.96);
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>ЧЕРКЕСОВ НИКИТА ЛОХ</h1>
-    <p>Нажми на кнопку ниже, чтобы запустить «вечный» прокси через WebSocket мост. Блокировки мимо!</p>
+  <h1>ЧЕРКЕСОВ НИКИТА ЛОХ</h1>
+  <p>Никита, жми кнопку и прокси твой!</p>
 
-    <!-- Ссылка настроена на TLS/WebSocket прокси (секрет ee...) -->
-    <a href="tg://proxy?server=://apple.com.update.is-cool.win&port=443&secret=ee00000000000000000000000000000000676f6f676c652e636f6d" class="proxy-btn" id="connectBtn">
-      🚀 ПОДКЛЮЧИТЬ ПРОКСИ
-    </a>
-
-    <div class="footer">
-      Работает напрямую в Telegram на iOS 26
-    </div>
-  </div>
+  <!-- Ссылка WebSocket / TLS -->
+  <a href="tg://proxy?server=://apple.com.update.is-cool.win&port=443&secret=ee00000000000000000000000000000000676f6f676c652e636f6d" class="proxy-btn" id="connectBtn">
+    🚀 ПОДКЛЮЧИТЬ
+  </a>
 
   <script>
-    // Принудительный запуск для Safari на iPhone 15 Pro
+    // Принудительный вызов для iPhone
     document.getElementById('connectBtn').onclick = function(e) {
       e.preventDefault();
-      const link = this.getAttribute('href');
-      window.location.replace(link);
+      window.location.replace(this.getAttribute('href'));
     };
   </script>
 
