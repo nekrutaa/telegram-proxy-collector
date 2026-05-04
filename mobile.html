@@ -42,53 +42,51 @@
   <div id="proxy-list">Загружаем список прокси…</div>
 
   <script>
-    (async () => {
+      (async () => {
     const listEl = document.getElementById('proxy-list');
     
-    // 1. СНАЧАЛА ДОБАВИМ ТЕСТОВУЮ КНОПКУ (она точно должна открыть окно)
-    const testBtn = document.createElement('a');
-    testBtn.href = 'tg://proxy?server=95.161.226.230&port=443&secret=ee00000000000000000000000000000000676f6f676c652e636f6d';
-    testBtn.className = 'proxy-btn';
-    testBtn.style.background = 'linear-gradient(135deg, #ff4b2b, #ff416c)'; // Сделаем её красной
-    testBtn.textContent = 'ТЕСТ (Нажми меня первым)';
-    listEl.appendChild(testBtn);
-
-        try {
-      // Используем основной файл со всеми прокси
-      const url = 'https://allorigins.win' + encodeURIComponent('https://githubusercontent.com');
-      const resp = await fetch(url);
+    try {
+      // БЕРЕМ ИЗ ТВОЕГО ЖЕ РЕПОЗИТОРИЯ
+      const resp = await fetch('proxy_all.txt'); 
+      if (!resp.ok) throw new Error('Файл не найден');
+      
       const text = await resp.text();
       
-      // Берем только строки, где есть t.me/proxy
+      // Очищаем строки и ищем ссылки
       const lines = text.split('\n')
                         .map(l => l.trim())
                         .filter(l => l.includes('t.me/proxy'));
 
-      lines.forEach((link, idx) => {
-        // Умная замена: ищем кусок t.me/proxy и превращаем в tg://proxy
-        const startIdx = link.indexOf('t.me/proxy');
-        if (startIdx === -1) return;
-        
-        const tgLink = 'tg://' + link.substring(startIdx + 5);
-        
-        const a = document.createElement('a');
-        a.href = tgLink;
-        a.className = 'proxy-btn';
-        a.textContent = 'Подключить прокси #' + (idx + 1);
-        
-        a.onclick = (e) => {
-          e.preventDefault();
-          window.location.href = tgLink;
-        };
-        
-        listEl.appendChild(a);
-      });
+      if (lines.length > 0) {
+        listEl.innerHTML = ''; // Убираем надпись "Загрузка"
 
+        lines.forEach((link, idx) => {
+          // Находим начало ссылки и меняем на tg://
+          const startIdx = link.indexOf('t.me/proxy');
+          const tgLink = 'tg://' + link.substring(startIdx + 5);
+          
+          const a = document.createElement('a');
+          a.href = tgLink;
+          a.className = 'proxy-btn';
+          a.textContent = 'Подключить прокси #' + (idx + 1);
+          
+          // Для гарантии на iOS добавляем принудительный переход
+          a.onclick = (e) => {
+            window.location.href = tgLink;
+            return false;
+          };
+          
+          listEl.appendChild(a);
+        });
+      } else {
+        listEl.textContent = 'В файле пока нет живых ссылок.';
+      }
     } catch (e) {
-      listEl.innerHTML += '<div class="error">Ошибка базы. Попробуй обновить страницу позже.</div>';
+      console.error(e);
+      listEl.innerHTML = '<div class="error">Ошибка: не удалось прочитать proxy_all.txt</div>';
     }
-
   })();
+
 
   </script>
 </body>
