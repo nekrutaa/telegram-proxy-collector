@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Proxy</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #1c1c1c; color: white; text-align: center; padding: 20px; }
+        .proxy-card { 
+            background: #2b2b2b; border-radius: 15px; padding: 20px; margin-bottom: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid #3d3d3d;
+        }
+        .btn { 
+            background: #0088cc; color: white; text-decoration: none; 
+            padding: 10px 20px; border-radius: 10px; font-weight: bold;
+        }
+        h2 { color: #0088cc; }
+    </style>
+</head>
+<body>
+    <h2>🚀 Быстрые Прокси для РФ</h2>
+    <div id="proxy-list">Загрузка свежих прокси...</div>
+
+    <script>
+        // Берем файл, который обновляет твой скрипт
+        fetch('proxy_ru.txt')
+            .then(response => response.text())
+            .then(data => {
+                const list = document.getElementById('proxy-list');
+                list.innerHTML = '';
+                const lines = data.split('\n').filter(line => line.includes('t.me/proxy'));
+                
+                lines.forEach((line, index) => {
+                    // ГЛАВНАЯ МАГИЯ: меняем https://t.me на tg://
+                    const tgLink = line.trim().replace('https://t.me', 'tg://');
+                    
+                    const card = document.createElement('div');
+                    card.className = 'proxy-card';
+                    card.innerHTML = `
+                        <span>Прокси #${index + 1} (RU)</span>
+                        <a href="${tgLink}" class="btn">ПОДКЛЮЧИТЬ</a>
+                    `;
+                    list.appendChild(card);
+                });
+            });
+    </script>
+</body>
+</html>
