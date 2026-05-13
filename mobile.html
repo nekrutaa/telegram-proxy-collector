@@ -2,111 +2,38 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>ЧЕРКЕСОВ НИКИТА ЛОХ</title>
+  <title>Бурмалда</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       font-family: system-ui, -apple-system, sans-serif;
+      /* Сохраняем ваш фон и наложение */
       background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
                   url('photo_2026-02-28_14-25-44.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
       margin: 0;
-      padding: 16px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
       text-align: center;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 8px #000;
-    }
-
-    p {
-      margin-bottom: 30px;
-      font-size: 1.2rem;
-      font-weight: 500;
-      text-shadow: 2px 2px 6px #000;
-      max-width: 300px;
-    }
-
-    .proxy-btn {
-      display: block;
-      width: 280px;
-      padding: 18px 0;
-      background: linear-gradient(135deg, #0088cc, #00ccff);
-      color: #fff;
-      border-radius: 15px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1.3rem;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    .proxy-btn:active {
-      transform: scale(0.96);
-    }
-
-    .status {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      opacity: 0.8;
+      font-size: 3rem;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      text-shadow: 2px 2px 15px rgba(0,0,0,0.8);
+      margin: 0;
     }
   </style>
 </head>
-
 <body>
 
-  <h1>ЧЕРКЕСОВ НИКИТА ЛОХ</h1>
-  <p>Никита, жми кнопку и прокси твой!</p>
-
-  <a href="#" class="proxy-btn" id="connectBtn">
-    🚀 ПОДКЛЮЧИТЬ
-  </a>
-
-  <div class="status" id="status">Подбираем лучший прокси...</div>
-
-  <script>
-    const proxies = [
-      "tg://proxy?server=172.65.117.172&port=22&secret=dd79e344818749bd7ac519130220c25d09",
-      "tg://proxy?server=195.254.165.247&port=25565&secret=dd79e344818749bd7ac519130220c25d09",
-      "tg://proxy?server=185.117.0.248&port=443&secret=eed451f808fd60ed2c45f11d38fdbc87c57961686f6f2e636f6d",
-      "tg://proxy?server=91.107.166.142&port=8888&secret=ddb10c15b9f659ae2b9f1e646c9c7c1f40"
-    ];
-
-    let currentIndex = 0;
-
-    function connectNextProxy() {
-      if (currentIndex >= proxies.length) {
-        document.getElementById("status").innerText = "❌ Все прокси не ответили";
-        return;
-      }
-
-      const proxy = proxies[currentIndex];
-      document.getElementById("status").innerText =
-        "Пробуем прокси " + (currentIndex + 1);
-
-      currentIndex++;
-
-      window.location.href = proxy;
-
-      // fallback через 2 секунды
-      setTimeout(connectNextProxy, 2000);
-    }
-
-    document.getElementById('connectBtn').onclick = function(e) {
-      e.preventDefault();
-      currentIndex = Math.floor(Math.random() * proxies.length); // случайный старт
-      connectNextProxy();
-    };
-  </script>
+  <h1>бурмалда</h1>
 
 </body>
 </html>
